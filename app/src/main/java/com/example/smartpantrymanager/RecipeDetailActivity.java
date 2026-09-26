@@ -1,12 +1,14 @@
 package com.example.smartpantrymanager;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class RecipeDetailActivity extends AppCompatActivity {
 
+    private Button btnBackFromRecipeDetail;
     private TextView tvRecipeName;
     private TextView tvRecipeDescription;
     private TextView tvRecipeIngredients;
@@ -16,6 +18,10 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
+
+        btnBackFromRecipeDetail = findViewById(R.id.btnBackFromRecipeDetail);
+
+        btnBackFromRecipeDetail.setOnClickListener(v -> finish());
 
         tvRecipeName = findViewById(R.id.tvRecipeName);
         tvRecipeDescription = findViewById(R.id.tvRecipeDescription);

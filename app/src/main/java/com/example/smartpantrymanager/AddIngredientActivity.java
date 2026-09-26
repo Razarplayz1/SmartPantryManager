@@ -16,6 +16,7 @@ public class AddIngredientActivity extends AppCompatActivity {
     private EditText etUnit;
     private EditText etExpiryDate;
     private Button btnSaveIngredient;
+    private Button btnBackFromAddIngredient;
 
     private DatabaseHelper databaseHelper;
 
@@ -27,6 +28,10 @@ public class AddIngredientActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_ingredient);
+
+        btnBackFromAddIngredient = findViewById(R.id.btnBackFromAddIngredient);
+
+        btnBackFromAddIngredient.setOnClickListener(v -> finish());
 
         etIngredientName = findViewById(R.id.etIngredientName);
         etQuantity = findViewById(R.id.etQuantity);

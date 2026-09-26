@@ -4,6 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,6 +19,7 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
     private RecyclerView recipesListView;
     private TextView noRecipesNotice;
+    private Button btnBackToPantry;
 
     private DatabaseHelper dbHelper;
     private RecipeAdapter adapter;
@@ -30,6 +32,10 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
 
         recipesListView = findViewById(R.id.recyclerViewRecipes);
         noRecipesNotice = findViewById(R.id.tvNoRecipesMessage);
+
+        btnBackToPantry = findViewById(R.id.btnBackToPantry);
+
+        btnBackToPantry.setOnClickListener(v -> finish());
 
         dbHelper = new DatabaseHelper(this);
 
