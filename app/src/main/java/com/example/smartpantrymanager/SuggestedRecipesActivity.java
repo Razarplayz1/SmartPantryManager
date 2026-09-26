@@ -3,6 +3,7 @@ package com.example.smartpantrymanager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,238 +16,141 @@ import java.util.Locale;
 
 public class SuggestedRecipesActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerViewRecipes;
-    private TextView tvNoRecipesMessage;
+    private RecyclerView recipesListView;
+    private TextView noRecipesNotice;
 
-    private DatabaseHelper databaseHelper;
-    private RecipeAdapter recipeAdapter;
-    private List<Recipe> suggestedRecipes;
+    private DatabaseHelper dbHelper;
+    private RecipeAdapter adapter;
+    private final List<Recipe> availableRecipes = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suggested_recipes);
 
-        recyclerViewRecipes = findViewById(R.id.recyclerViewRecipes);
-        tvNoRecipesMessage = findViewById(R.id.tvNoRecipesMessage);
+        recipesListView = findViewById(R.id.recyclerViewRecipes);
+        noRecipesNotice = findViewById(R.id.tvNoRecipesMessage);
 
-        databaseHelper = new DatabaseHelper(this);
+        dbHelper = new DatabaseHelper(this);
 
-        suggestedRecipes = new ArrayList<>();
+        setupRecyclerView();
 
-        recyclerViewRecipes.setLayoutManager(
-                new LinearLayoutManager(this)
-        );
-
-        recipeAdapter = new RecipeAdapter(suggestedRecipes);
-        recyclerViewRecipes.setAdapter(recipeAdapter);
-
-        loadSuggestedRecipes();
+        updateSuggestedRecipes();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        if (databaseHelper != null) {
-            loadSuggestedRecipes();
+        if (dbHelper != null) {
+            updateSuggestedRecipes();
         }
     }
 
-    private void loadSuggestedRecipes() {
+    private void setupRecyclerView() {
+        recipesListView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new RecipeAdapter(availableRecipes);
+        recipesListView.setAdapter(adapter);
+    }
 
-        suggestedRecipes.clear();
+    private void updateSuggestedRecipes() {
+        availableRecipes.clear();
 
-        List<Ingredient> pantryIngredients = loadPantryIngredients();
-        List<Recipe> allRecipes = loadAllRecipes();
+        List<Ingredient> pantryContents = getPantryIngredients();
+        List<Recipe> allRecipes = getAllRecipesFromDatabase();
 
-        for (Recipe recipe : allRecipes) {
-
-            if (canMakeRecipe(recipe, pantryIngredients)) {
-                suggestedRecipes.add(recipe);
+        for (Recipe r : allRecipes) {
+            if (isRecipeFeasible(r, pantryContents)) {
+                availableRecipes.add(r);
             }
         }
 
-        recipeAdapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        toggleRecipeVisibility(availableRecipes.isEmpty());
+    }
 
-        if (suggestedRecipes.isEmpty()) {
-            tvNoRecipesMessage.setVisibility(TextView.VISIBLE);
-            recyclerViewRecipes.setVisibility(RecyclerView.GONE);
+    private void toggleRecipeVisibility(boolean noRecipesAvailable) {
+        if (noRecipesAvailable) {
+            noRecipesNotice.setVisibility(View.VISIBLE);
+            recipesListView.setVisibility(View.GONE);
         } else {
-            tvNoRecipesMessage.setVisibility(TextView.GONE);
-            recyclerViewRecipes.setVisibility(RecyclerView.VISIBLE);
+            noRecipesNotice.setVisibility(View.GONE);
+            recipesListView.setVisibility(View.VISIBLE);
         }
     }
 
-    private List<Ingredient> loadPantryIngredients() {
+    private List<Ingredient> getPantryIngredients() {
+        List<Ingredient> list = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        List<Ingredient> ingredients = new ArrayList<>();
+        try (Cursor cursor = db.query(
+                "ingredients", null,null,null,null,null,
+                "name ASC")) {
 
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                "ingredients",
-                null,
-                null,
-                null,
-                null,
-                null,
-                "name ASC"
-        );
-
-        while (cursor.moveToNext()) {
-
-            int id = cursor.getInt(
-                    cursor.getColumnIndexOrThrow("id")
-            );
-
-            String name = cursor.getString(
-                    cursor.getColumnIndexOrThrow("name")
-            );
-
-            double quantity = cursor.getDouble(
-                    cursor.getColumnIndexOrThrow("quantity")
-            );
-
-            String unit = cursor.getString(
-                    cursor.getColumnIndexOrThrow("unit")
-            );
-
-            String expiryDate = cursor.getString(
-                    cursor.getColumnIndexOrThrow("expiryDate")
-            );
-
-            ingredients.add(
-                    new Ingredient(
-                            id,
-                            name,
-                            quantity,
-                            unit,
-                            expiryDate
-                    )
-            );
-        }
-
-        cursor.close();
-        db.close();
-
-        return ingredients;
-    }
-
-    private List<Recipe> loadAllRecipes() {
-
-        List<Recipe> recipes = new ArrayList<>();
-
-        SQLiteDatabase db = databaseHelper.getReadableDatabase();
-
-        Cursor cursor = db.query(
-                "recipes",
-                null,
-                null,
-                null,
-                null,
-                null,
-                "name ASC"
-        );
-
-        while (cursor.moveToNext()) {
-
-            int id = cursor.getInt(
-                    cursor.getColumnIndexOrThrow("id")
-            );
-
-            String name = cursor.getString(
-                    cursor.getColumnIndexOrThrow("name")
-            );
-
-            String description = cursor.getString(
-                    cursor.getColumnIndexOrThrow("description")
-            );
-
-            String ingredients = cursor.getString(
-                    cursor.getColumnIndexOrThrow("ingredients")
-            );
-
-            String instructions = cursor.getString(
-                    cursor.getColumnIndexOrThrow("instructions")
-            );
-
-            recipes.add(
-                    new Recipe(
-                            id,
-                            name,
-                            description,
-                            ingredients,
-                            instructions
-                    )
-            );
-        }
-
-        cursor.close();
-        db.close();
-
-        return recipes;
-    }
-
-    private boolean canMakeRecipe(
-            Recipe recipe,
-            List<Ingredient> pantryIngredients) {
-
-        String[] requiredIngredients =
-                recipe.getIngredients().split(",");
-
-        for (String required : requiredIngredients) {
-
-            String[] parts = required.split(":", 3);
-
-            if (parts.length != 3) {
-                return false;
+            while (cursor.moveToNext()) {
+                list.add(new Ingredient(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow("quantity")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("unit")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("expiryDate"))
+                ));
             }
+        }
 
-            String requiredName = normalizeName(parts[0]);
+        db.close();
+        return list;
+    }
 
-            double requiredQuantity;
+    private List<Recipe> getAllRecipesFromDatabase() {
+        List<Recipe> list = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
+        try (Cursor cursor = db.query(
+                "recipes", null,null,null,null,null,
+                "name ASC")) {
+
+            while (cursor.moveToNext()) {
+                list.add(new Recipe(
+                        cursor.getInt(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("description")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("ingredients")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("instructions"))
+                ));
+            }
+        }
+
+        db.close();
+        return list;
+    }
+
+    private boolean isRecipeFeasible(Recipe recipe, List<Ingredient> pantry) {
+        String[] neededIngredients = recipe.getIngredients().split(",");
+
+        for (String ingredient : neededIngredients) {
+            String[] details = ingredient.split(":", 3);
+            if (details.length != 3) return false;
+
+            String ingredientName = standardizeName(details[0]);
+            double requiredQty;
             try {
-                requiredQuantity = Double.parseDouble(parts[1]);
+                requiredQty = Double.parseDouble(details[1]);
             } catch (NumberFormatException e) {
                 return false;
             }
+            String ingredientUnit = standardizeUnit(details[2]);
+            double requiredBaseQty = toBaseUnitQuantity(requiredQty, ingredientUnit);
 
-            String requiredUnit = normalizeUnit(parts[2]);
+            double pantrySum = 0;
+            for (Ingredient available : pantry) {
+                if (standardizeName(available.getName()).equals(ingredientName) &&
+                        areUnitsCompatible(standardizeUnit(available.getUnit()), ingredientUnit)) {
 
-            double requiredBaseQuantity =
-                    convertToBaseQuantity(
-                            requiredQuantity,
-                            requiredUnit
-                    );
-
-            double pantryBaseQuantity = 0;
-
-            for (Ingredient pantryIngredient : pantryIngredients) {
-
-                String pantryName =
-                        normalizeName(pantryIngredient.getName());
-
-                String pantryUnit =
-                        normalizeUnit(pantryIngredient.getUnit());
-
-                if (pantryName.equals(requiredName)
-                        && areCompatibleUnits(
-                        pantryUnit,
-                        requiredUnit)) {
-
-                    double pantryQuantity =
-                            convertToBaseQuantity(
-                                    pantryIngredient.getQuantity(),
-                                    pantryUnit
-                            );
-
-                    pantryBaseQuantity += pantryQuantity;
+                    pantrySum += toBaseUnitQuantity(available.getQuantity(), standardizeUnit(available.getUnit()));
                 }
             }
 
-            if (pantryBaseQuantity < requiredBaseQuantity) {
+            if (pantrySum < requiredBaseQty) {
                 return false;
             }
         }
@@ -254,142 +158,65 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         return true;
     }
 
-    private String normalizeName(String name) {
+    private String standardizeName(String name) {
+        String low = name.toLowerCase(Locale.ROOT).trim();
 
-        String result = name
-                .toLowerCase(Locale.ROOT)
-                .trim();
+        if (low.equals("tomatoes")) return "tomato";
+        if (low.endsWith("ies")) return low.substring(0, low.length() - 3) + "y";
+        if (low.endsWith("s") && !low.endsWith("ss")) return low.substring(0, low.length() - 1);
 
-        // Handle common plural forms.
-        if (result.equals("tomatoes")) {
-            return "tomato";
-        }
-
-        if (result.endsWith("ies")) {
-            return result.substring(
-                    0,
-                    result.length() - 3
-            ) + "y";
-        }
-
-        if (result.endsWith("s")
-                && !result.endsWith("ss")) {
-
-            result = result.substring(
-                    0,
-                    result.length() - 1
-            );
-        }
-
-        return result;
+        return low;
     }
 
-    private String normalizeUnit(String unit) {
-
-        String result = unit
-                .toLowerCase(Locale.ROOT)
-                .trim();
-
-        if (result.equals("item")
-                || result.equals("items")
-                || result.equals("piece")
-                || result.equals("pieces")) {
-
-            return "items";
-        }
-
-        if (result.equals("g")
-                || result.equals("gram")
-                || result.equals("grams")) {
-
-            return "grams";
-        }
-
-        if (result.equals("kg")
-                || result.equals("kilogram")
-                || result.equals("kilograms")) {
-
-            return "kg";
-        }
-
-        if (result.equals("ml")
-                || result.equals("millilitre")
-                || result.equals("millilitres")) {
-
-            return "ml";
-        }
-
-        if (result.equals("l")
-                || result.equals("litre")
-                || result.equals("litres")) {
-
-            return "l";
-        }
-
-        return result;
-    }
-
-    private boolean areCompatibleUnits(
-            String pantryUnit,
-            String requiredUnit) {
-
-        // Both are counting individual items.
-        if (pantryUnit.equals("items")
-                && requiredUnit.equals("items")) {
-
-            return true;
-        }
-
-        // Both are weight measurements.
-        if ((pantryUnit.equals("grams")
-                || pantryUnit.equals("kg"))
-                && (requiredUnit.equals("grams")
-                || requiredUnit.equals("kg"))) {
-
-            return true;
-        }
-
-        // Both are volume measurements.
-        if ((pantryUnit.equals("ml")
-                || pantryUnit.equals("l"))
-                && (requiredUnit.equals("ml")
-                || requiredUnit.equals("l"))) {
-
-            return true;
-        }
-
-        return false;
-    }
-
-    private double convertToBaseQuantity(
-            double quantity,
-            String unit) {
-
-        switch (unit) {
-
-            case "kg":
-                // Convert kilograms to grams.
-                return quantity * 1000;
-
-            case "grams":
-                // Grams are our base weight unit.
-                return quantity;
-
-            case "l":
-                // Convert litres to millilitres.
-                return quantity * 1000;
-
-            case "ml":
-                // Millilitres are our base volume unit.
-                return quantity;
-
+    private String standardizeUnit(String unit) {
+        String u = unit.toLowerCase(Locale.ROOT).trim();
+        switch (u) {
+            case "item":
             case "items":
-                // Items stay as items.
-                return quantity;
-
+            case "piece":
+            case "pieces":
+                return "items";
+            case "g":
+            case "gram":
+            case "grams":
+                return "grams";
+            case "kg":
+            case "kilogram":
+            case "kilograms":
+                return "kg";
+            case "ml":
+            case "millilitre":
+            case "millilitres":
+                return "ml";
+            case "l":
+            case "litre":
+            case "litres":
+                return "l";
             default:
-                // Unknown units cannot be safely converted.
-                return quantity;
+                return u;
+        }
+    }
+
+    private boolean areUnitsCompatible(String unitA, String unitB) {
+        if (unitA.equals("items") && unitB.equals("items")) return true;
+
+        boolean isWeightA = unitA.equals("grams") || unitA.equals("kg");
+        boolean isWeightB = unitB.equals("grams") || unitB.equals("kg");
+        if (isWeightA && isWeightB) return true;
+
+        boolean isVolumeA = unitA.equals("ml") || unitA.equals("l");
+        boolean isVolumeB = unitB.equals("ml") || unitB.equals("l");
+        return isVolumeA && isVolumeB;
+    }
+
+    private double toBaseUnitQuantity(double quantity, String unit) {
+        switch (unit) {
+            case "kg": return quantity * 1000;
+            case "grams": return quantity;
+            case "l": return quantity * 1000;
+            case "ml": return quantity;
+            case "items": return quantity;
+            default: return quantity;
         }
     }
 }
