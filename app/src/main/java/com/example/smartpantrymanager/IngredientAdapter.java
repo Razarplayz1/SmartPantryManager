@@ -3,6 +3,7 @@ package com.example.smartpantrymanager;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +14,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientViewHolder> {
 
@@ -40,11 +45,56 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
         holder.tvIngredientName.setText(ingredient.getName());
 
-        String details = ingredient.getQuantity()
-                + " "
-                + ingredient.getUnit();
-
+        String details = ingredient.getQuantity() + " " + ingredient.getUnit();
         holder.tvIngredientDetails.setText(details);
+
+        String expiryDate = ingredient.getExpiryDate();
+
+        if (expiryDate != null && !expiryDate.trim().isEmpty()) {
+
+            holder.tvIngredientExpiry.setText("Expires: " + expiryDate);
+            holder.tvIngredientExpiry.setVisibility(View.VISIBLE);
+
+            SharedPreferences preferences = holder.itemView.getContext()
+                    .getSharedPreferences(
+                            "SmartPantrySettings",
+                            Context.MODE_PRIVATE
+                    );
+
+            boolean expiryRemindersEnabled = preferences.getBoolean(
+                    "expiry_reminders",
+                    true
+            );
+
+            if (expiryRemindersEnabled) {
+
+                String warning = getExpiryWarning(expiryDate);
+
+                if (warning != null) {
+
+                    holder.tvExpiryWarning.setText(warning);
+                    holder.tvExpiryWarning.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    holder.tvExpiryWarning.setText("");
+                    holder.tvExpiryWarning.setVisibility(View.GONE);
+                }
+
+            } else {
+
+                holder.tvExpiryWarning.setText("");
+                holder.tvExpiryWarning.setVisibility(View.GONE);
+            }
+
+        } else {
+
+            holder.tvIngredientExpiry.setText("");
+            holder.tvIngredientExpiry.setVisibility(View.GONE);
+
+            holder.tvExpiryWarning.setText("");
+            holder.tvExpiryWarning.setVisibility(View.GONE);
+        }
 
         // EDIT BUTTON
         holder.btnEditIngredient.setOnClickListener(v -> {
@@ -109,6 +159,60 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         });
     }
 
+    private String getExpiryWarning(String expiryDate) {
+
+        String[] dateFormats = {
+                "dd/MM/yyyy",
+                "yyyy-MM-dd",
+                "MM/dd/yyyy"
+        };
+
+        Date expiry = null;
+
+        for (String format : dateFormats) {
+
+            try {
+
+                SimpleDateFormat dateFormat =
+                        new SimpleDateFormat(
+                                format,
+                                Locale.getDefault()
+                        );
+
+                dateFormat.setLenient(false);
+
+                expiry = dateFormat.parse(expiryDate);
+
+                if (expiry != null) {
+                    break;
+                }
+
+            } catch (ParseException ignored) {
+                // Try the next date format.
+            }
+        }
+
+        if (expiry == null) {
+            return null;
+        }
+
+        long currentTime = System.currentTimeMillis();
+        long difference = expiry.getTime() - currentTime;
+
+        long daysRemaining =
+                difference / (1000L * 60L * 60L * 24L);
+
+        if (daysRemaining < 0) {
+            return "⚠ Expired";
+        }
+
+        if (daysRemaining <= 3) {
+            return "⚠ Expires soon";
+        }
+
+        return null;
+    }
+
     @Override
     public int getItemCount() {
         return ingredientList.size();
@@ -118,6 +222,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
         TextView tvIngredientName;
         TextView tvIngredientDetails;
+        TextView tvIngredientExpiry;
+        TextView tvExpiryWarning;
 
         Button btnEditIngredient;
         Button btnDeleteIngredient;
@@ -130,6 +236,12 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
             tvIngredientDetails =
                     itemView.findViewById(R.id.tvIngredientDetails);
+
+            tvIngredientExpiry =
+                    itemView.findViewById(R.id.tvIngredientExpiry);
+
+            tvExpiryWarning =
+                    itemView.findViewById(R.id.tvExpiryWarning);
 
             btnEditIngredient =
                     itemView.findViewById(R.id.btnEditIngredient);

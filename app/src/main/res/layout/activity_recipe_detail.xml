@@ -16,8 +16,10 @@
             android:layout_height="wrap_content"
             android:text="← Back"
             android:textSize="16sp"
+            android:textAllCaps="false"
+            android:minHeight="48dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/tvRecipeName"
@@ -26,23 +28,23 @@
             android:text="Tomato Omelette"
             android:textSize="28sp"
             android:textStyle="bold"
-            android:paddingBottom="12dp" />
+            android:paddingBottom="8dp" />
 
         <TextView
             android:id="@+id/tvRecipeDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Recipe description"
-            android:textSize="17sp"
-            android:paddingBottom="20dp" />
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ingredients"
-            android:textSize="22sp"
+            android:textSize="21sp"
             android:textStyle="bold"
-            android:paddingBottom="8dp" />
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/tvRecipeIngredients"
@@ -50,22 +52,23 @@
             android:layout_height="wrap_content"
             android:text="Ingredients"
             android:textSize="16sp"
-            android:paddingBottom="20dp" />
+            android:layout_marginBottom="24dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Method"
-            android:textSize="22sp"
+            android:textSize="21sp"
             android:textStyle="bold"
-            android:paddingBottom="8dp" />
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/tvRecipeInstructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Instructions"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            android:lineSpacingExtra="4dp" />
 
     </LinearLayout>
 

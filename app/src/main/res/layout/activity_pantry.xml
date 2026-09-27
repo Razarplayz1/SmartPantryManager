@@ -24,7 +24,8 @@
         android:text="@string/empty_pantry_message"
         android:textSize="16sp"
         android:gravity="center"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewIngredients"
@@ -33,13 +34,28 @@
         android:layout_weight="1"
         tools:listitem="@layout/item_ingredient" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Quick Actions"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#003366"
+        android:gravity="center"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp" />
+
     <Button
         android:id="@+id/btnAddIngredient"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/add_ingredient"
         android:textSize="16sp"
-        android:layout_marginTop="12dp" />
+        android:minHeight="48dp"
+        android:textAllCaps="false"
+        android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/btnSuggestedRecipes"
@@ -47,13 +63,19 @@
         android:layout_height="wrap_content"
         android:text="Suggested Recipes"
         android:textSize="16sp"
+        android:minHeight="48dp"
+        android:textAllCaps="false"
         android:layout_marginTop="8dp" />
+
     <Button
         android:id="@+id/btnSettings"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Settings"
         android:textSize="16sp"
-        android:layout_marginTop="8dp" />
+        android:minHeight="48dp"
+        android:textAllCaps="false"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp" />
 
 </LinearLayout>
