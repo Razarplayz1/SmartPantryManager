@@ -12,14 +12,14 @@
 
         <Button
             android:id="@+id/btnBackFromRecipeDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Back"
-            android:textSize="17sp"
-            android:textAllCaps="false"
-            android:minHeight="48dp"
+            android:layout_width="104dp"
+            android:layout_height="68dp"
             android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:minHeight="48dp"
+            android:text="Back"
+            android:textAllCaps="false"
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvRecipeName"
