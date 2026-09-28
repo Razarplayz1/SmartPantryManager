@@ -1,5 +1,7 @@
 package com.example.smartpantrymanager;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
+import java.util.Locale;
 
 public class RecipeAdapter
         extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
@@ -39,16 +42,24 @@ public class RecipeAdapter
 
         Recipe recipe = recipeList.get(position);
 
-        holder.tvRecipeName.setText(recipe.getName());
+        String recipeName = recipe.getName();
+
+        holder.tvRecipeName.setText(recipeName);
 
         holder.tvRecipeDescription.setText(
                 recipe.getDescription()
         );
 
+        int recipeColor = getRecipeColor(recipeName);
+
+        holder.recipeColorAccent.setBackgroundColor(recipeColor);
+
+        holder.tvRecipeName.setTextColor(recipeColor);
+
         holder.btnViewRecipe.setOnClickListener(v -> {
 
-            android.content.Intent intent =
-                    new android.content.Intent(
+            Intent intent =
+                    new Intent(
                             v.getContext(),
                             RecipeDetailActivity.class
                     );
@@ -82,6 +93,49 @@ public class RecipeAdapter
         });
     }
 
+    private int getRecipeColor(String recipeName) {
+
+        String name = recipeName.toLowerCase(Locale.ROOT);
+
+        if (name.contains("tomato")) {
+            return Color.parseColor("#C94C4C");
+        }
+
+        if (name.contains("banana")) {
+            return Color.parseColor("#D4A72C");
+        }
+
+        if (name.contains("vegetable")) {
+            return Color.parseColor("#4F8A5B");
+        }
+
+        if (name.contains("chicken")) {
+            return Color.parseColor("#C9783A");
+        }
+
+        if (name.contains("tuna")) {
+            return Color.parseColor("#3F78A8");
+        }
+
+        if (name.contains("egg")) {
+            return Color.parseColor("#C99A24");
+        }
+
+        if (name.contains("cheese")) {
+            return Color.parseColor("#D18B2C");
+        }
+
+        if (name.contains("toast")) {
+            return Color.parseColor("#9A6842");
+        }
+
+        if (name.contains("pasta")) {
+            return Color.parseColor("#7A5A9E");
+        }
+
+        return Color.parseColor("#6B4FA8");
+    }
+
     @Override
     public int getItemCount() {
         return recipeList.size();
@@ -93,6 +147,7 @@ public class RecipeAdapter
         TextView tvRecipeName;
         TextView tvRecipeDescription;
         Button btnViewRecipe;
+        View recipeColorAccent;
 
         public RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,6 +165,11 @@ public class RecipeAdapter
             btnViewRecipe =
                     itemView.findViewById(
                             R.id.btnViewRecipe
+                    );
+
+            recipeColorAccent =
+                    itemView.findViewById(
+                            R.id.recipeColorAccent
                     );
         }
     }
