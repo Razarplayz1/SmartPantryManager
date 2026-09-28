@@ -5,77 +5,105 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp"
+    android:background="#FCF9FC"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="12dp"
     tools:context=".PantryActivity">
 
+    <!-- Pantry Header -->
     <TextView
         android:id="@+id/tvPantryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/my_pantry"
-        android:textSize="28sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        android:paddingBottom="16dp" />
+        android:textColor="#302A35"
+        android:paddingTop="4dp" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Keep track of the ingredients in your pantry."
+        android:textSize="16sp"
+        android:textColor="#6F6872"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp" />
+
+    <!-- Empty Pantry Message -->
     <TextView
         android:id="@+id/tvEmptyMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/empty_pantry_message"
         android:textSize="16sp"
+        android:textColor="#6F6872"
         android:gravity="center"
-        android:padding="16dp"
+        android:padding="20dp"
         android:visibility="gone" />
 
+    <!-- Ingredient List -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewIngredients"
-        android:layout_width="313dp"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp"
         tools:listitem="@layout/item_ingredient" />
 
+    <!-- Quick Actions Section -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Quick Actions"
-        android:textSize="22sp"
+        android:textSize="20sp"
         android:textStyle="bold"
-        android:textColor="#003366"
+        android:textColor="#302A35"
         android:gravity="center"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="4dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp" />
+        android:layout_marginBottom="10dp" />
 
+    <!-- Add Ingredient -->
+    <!-- Add Ingredient -->
     <Button
         android:id="@+id/btnAddIngredient"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/add_ingredient"
-        android:textSize="16sp"
-        android:minHeight="48dp"
+        android:layout_height="48dp"
+        android:text="[ + ]  Add Ingredient"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
         android:textAllCaps="false"
-        android:layout_marginTop="16dp" />
+        android:background="@drawable/quick_action_primary"
+        android:layout_marginBottom="8dp" />
 
+    <!-- Suggested Recipes -->
     <Button
         android:id="@+id/btnSuggestedRecipes"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Suggested Recipes"
-        android:textSize="16sp"
-        android:minHeight="48dp"
+        android:layout_height="48dp"
+        android:text="[ ? ]  Suggested Recipes"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
         android:textAllCaps="false"
-        android:layout_marginTop="8dp" />
+        android:background="@drawable/quick_action_primary"
+        android:layout_marginBottom="8dp" />
 
+    <!-- Settings -->
     <Button
         android:id="@+id/btnSettings"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Settings"
-        android:textSize="16sp"
-        android:minHeight="48dp"
+        android:layout_height="48dp"
+        android:text="[ * ]  Settings"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
         android:textAllCaps="false"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp" />
+        android:background="@drawable/quick_action_primary" />
 
 </LinearLayout>

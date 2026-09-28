@@ -10,8 +10,8 @@
         android:id="@+id/btnBackToPantry"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="← Back"
-        android:textSize="16sp"
+        android:text="Back"
+        android:textSize="17sp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp" />
 
@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Suggested Recipes"
-        android:textSize="28sp"
+        android:textSize="34sp"
         android:textStyle="bold"
         android:paddingBottom="16dp" />
 
@@ -28,8 +28,9 @@
         android:id="@+id/tvNoRecipesMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No recipes match your pantry yet. Add more ingredients!"
-        android:textSize="16sp"
+        android:text="No recipes match your pantry yet. Try adding more ingredients!"
+        android:textColor="#003366"
+        android:textSize="34sp"
         android:gravity="center"
         android:padding="16dp"
         android:visibility="gone" />

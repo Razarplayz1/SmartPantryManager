@@ -14,8 +14,8 @@
             android:id="@+id/btnBackFromRecipeDetail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="← Back"
-            android:textSize="16sp"
+            android:text="Back"
+            android:textSize="17sp"
             android:textAllCaps="false"
             android:minHeight="48dp"
             android:layout_marginTop="16dp"
@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Recipe description"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:layout_marginBottom="24dp" />
 
         <TextView
@@ -51,7 +51,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Ingredients"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:layout_marginBottom="24dp" />
 
         <TextView
@@ -67,7 +67,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Instructions"
-            android:textSize="16sp"
+            android:textSize="18sp"
             android:lineSpacingExtra="4dp" />
 
     </LinearLayout>
