@@ -3,94 +3,110 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:orientation="horizontal"
     android:layout_marginBottom="12dp"
     android:background="@drawable/ingredient_background">
 
-    <!-- Ingredient name + quantity -->
+    <!-- Small coloured accent bar -->
+    <View
+        android:id="@+id/ingredientColorAccent"
+        android:layout_width="6dp"
+        android:layout_height="match_parent"
+        android:background="#6B4FA8" />
+
+    <!-- Ingredient card content -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:padding="16dp">
 
-        <TextView
-            android:id="@+id/tvIngredientName"
-            android:layout_width="0dp"
+        <!-- Ingredient name + quantity -->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Tomatoes"
-            android:textSize="21sp"
-            android:textStyle="bold" />
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
 
+            <TextView
+                android:id="@+id/tvIngredientName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Tomatoes"
+                android:textSize="21sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvIngredientDetails"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="3 items"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                android:gravity="center"
+                android:paddingStart="13dp"
+                android:paddingEnd="13dp"
+                android:paddingTop="7dp"
+                android:paddingBottom="7dp"
+                android:background="@drawable/quantity_badge" />
+
+        </LinearLayout>
+
+        <!-- Expiry date -->
         <TextView
-            android:id="@+id/tvIngredientDetails"
-            android:layout_width="wrap_content"
+            android:id="@+id/tvIngredientExpiry"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="3 items"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
-            android:gravity="center"
-            android:paddingStart="13dp"
-            android:paddingEnd="13dp"
-            android:paddingTop="7dp"
-            android:paddingBottom="7dp"
-            android:background="@drawable/quantity_badge" />
+            android:layout_marginTop="12dp"
+            android:visibility="gone" />
 
-    </LinearLayout>
+        <!-- Expiry warning -->
+        <TextView
+            android:id="@+id/tvExpiryWarning"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="#D32F2F"
+            android:layout_marginTop="5dp"
+            android:visibility="gone" />
 
-    <!-- Expiry date -->
-    <TextView
-        android:id="@+id/tvIngredientExpiry"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:layout_marginTop="12dp"
-        android:visibility="gone" />
+        <!-- Action buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="14dp">
 
-    <!-- Expiry warning -->
-    <TextView
-        android:id="@+id/tvExpiryWarning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:textColor="#D32F2F"
-        android:layout_marginTop="5dp"
-        android:visibility="gone" />
+            <Button
+                android:id="@+id/btnEditIngredient"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:text="Edit Ingredient"
+                android:textSize="13sp"
+                android:textAllCaps="false"
+                android:minHeight="0dp"
+                android:background="@drawable/edit_button_background" />
 
-    <!-- Action buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="14dp">
+            <Button
+                android:id="@+id/btnDeleteIngredient"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:text="Delete"
+                android:textSize="13sp"
+                android:textAllCaps="false"
+                android:minHeight="0dp"
+                android:background="@drawable/delete_button_background" />
 
-        <Button
-            android:id="@+id/btnEditIngredient"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:text="Edit Ingredient"
-            android:textSize="13sp"
-            android:textAllCaps="false"
-            android:minHeight="0dp"
-            android:background="@drawable/edit_button_background" />
-
-        <Button
-            android:id="@+id/btnDeleteIngredient"
-            android:layout_width="0dp"
-            android:layout_height="40dp"
-            android:layout_weight="1"
-            android:layout_marginStart="8dp"
-            android:text="Delete"
-            android:textSize="13sp"
-            android:textAllCaps="false"
-            android:minHeight="0dp"
-            android:background="@drawable/delete_button_background" />
+        </LinearLayout>
 
     </LinearLayout>
 

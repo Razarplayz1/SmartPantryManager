@@ -43,11 +43,18 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
         Ingredient ingredient = ingredientList.get(position);
 
+        // Ingredient name
         holder.tvIngredientName.setText(ingredient.getName());
 
+        // Ingredient colour accent
+        int ingredientColor = getIngredientColor(ingredient.getName());
+        holder.ingredientColorAccent.setBackgroundColor(ingredientColor);
+
+        // Quantity and unit
         String details = ingredient.getQuantity() + " " + ingredient.getUnit();
         holder.tvIngredientDetails.setText(details);
 
+        // Expiry date
         String expiryDate = ingredient.getExpiryDate();
 
         if (expiryDate != null && !expiryDate.trim().isEmpty()) {
@@ -159,6 +166,63 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         });
     }
 
+    // Choose the accent colour based on the ingredient name
+    private int getIngredientColor(String ingredientName) {
+
+        String name = ingredientName.toLowerCase(Locale.ROOT).trim();
+
+        if (name.equals("banana") || name.equals("bananas")) {
+            return android.graphics.Color.parseColor("#D4A72C");
+        }
+
+        if (name.equals("egg") || name.equals("eggs")) {
+            return android.graphics.Color.parseColor("#C99A24");
+        }
+
+        if (name.equals("tomato") || name.equals("tomatoes")) {
+            return android.graphics.Color.parseColor("#C94C4C");
+        }
+
+        if (name.equals("chicken")) {
+            return android.graphics.Color.parseColor("#C9783A");
+        }
+
+        if (name.equals("carrot") || name.equals("carrots")) {
+            return android.graphics.Color.parseColor("#4F8A5B");
+        }
+
+        if (name.equals("cheese")) {
+            return android.graphics.Color.parseColor("#D18B2C");
+        }
+
+        if (name.equals("milk")) {
+            return android.graphics.Color.parseColor("#5B8DB8");
+        }
+
+        if (name.equals("bread")) {
+            return android.graphics.Color.parseColor("#9A6842");
+        }
+
+        if (name.equals("pasta")) {
+            return android.graphics.Color.parseColor("#7A5A9E");
+        }
+
+        if (name.equals("rice")) {
+            return android.graphics.Color.parseColor("#B89B5E");
+        }
+
+        if (name.equals("onion") || name.equals("onions")) {
+            return android.graphics.Color.parseColor("#8A5A9E");
+        }
+
+        if (name.equals("garlic")) {
+            return android.graphics.Color.parseColor("#7A9A5A");
+        }
+
+        // Default colour for other ingredients
+        return android.graphics.Color.parseColor("#6B4FA8");
+    }
+
     private String getExpiryWarning(String expiryDate) {
 
         String[] dateFormats = {
@@ -228,6 +292,8 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
         Button btnEditIngredient;
         Button btnDeleteIngredient;
 
+        View ingredientColorAccent;
+
         public IngredientViewHolder(@NonNull View itemView) {
             super(itemView);
 
@@ -248,6 +314,9 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
             btnDeleteIngredient =
                     itemView.findViewById(R.id.btnDeleteIngredient);
+
+            ingredientColorAccent =
+                    itemView.findViewById(R.id.ingredientColorAccent);
         }
     }
 }
