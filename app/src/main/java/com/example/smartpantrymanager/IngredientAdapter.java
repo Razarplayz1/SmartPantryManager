@@ -203,11 +203,11 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
                 difference / (1000L * 60L * 60L * 24L);
 
         if (daysRemaining < 0) {
-            return "⚠ Expired";
+            return "Expired!";
         }
 
         if (daysRemaining <= 3) {
-            return "⚠ Expires soon";
+            return "Expires soon!";
         }
 
         return null;
