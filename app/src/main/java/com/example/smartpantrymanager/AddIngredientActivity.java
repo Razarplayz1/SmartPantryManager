@@ -67,7 +67,6 @@ public class AddIngredientActivity extends AppCompatActivity {
             );
 
             btnSaveIngredient.setText("Update Ingredient");
-
         }
 
         btnSaveIngredient.setOnClickListener(v -> saveIngredient());
@@ -80,21 +79,24 @@ public class AddIngredientActivity extends AppCompatActivity {
         String unit = etUnit.getText().toString().trim();
         String expiryDate = etExpiryDate.getText().toString().trim();
 
-        // Validate name
+        // Validate ingredient name
         if (name.isEmpty()) {
-            etIngredientName.setError("Please enter an ingredient name");
+            etIngredientName.setError("Enter an ingredient name");
+            etIngredientName.requestFocus();
             return;
         }
 
         // Validate quantity
         if (quantityText.isEmpty()) {
-            etQuantity.setError("Please enter a quantity");
+            etQuantity.setError("Enter a quantity");
+            etQuantity.requestFocus();
             return;
         }
 
         // Validate unit
         if (unit.isEmpty()) {
-            etUnit.setError("Please enter a unit");
+            etUnit.setError("Enter a unit");
+            etUnit.requestFocus();
             return;
         }
 
@@ -103,12 +105,15 @@ public class AddIngredientActivity extends AppCompatActivity {
         try {
             quantity = Double.parseDouble(quantityText);
         } catch (NumberFormatException e) {
-            etQuantity.setError("Please enter a valid number");
+            etQuantity.setError("Enter a valid number");
+            etQuantity.requestFocus();
             return;
         }
 
+        // Quantity must be greater than zero
         if (quantity <= 0) {
             etQuantity.setError("Quantity must be greater than 0");
+            etQuantity.requestFocus();
             return;
         }
 
