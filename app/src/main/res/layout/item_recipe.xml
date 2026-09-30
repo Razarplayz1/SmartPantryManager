@@ -7,14 +7,12 @@
     android:layout_marginBottom="12dp"
     android:background="@drawable/recipe_background">
 
-    <!-- Colour accent -->
     <View
         android:id="@+id/recipeColorAccent"
         android:layout_width="6dp"
         android:layout_height="match_parent"
         android:background="#6B4FA8" />
 
-    <!-- Recipe content -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -29,7 +27,7 @@
             android:text="Tomato Omelette"
             android:textSize="21sp"
             android:textStyle="bold"
-            android:textColor="#6B4FA8" />
+            android:textColor="@color/app_primary" />
 
         <TextView
             android:id="@+id/tvRecipeDescription"
@@ -37,7 +35,7 @@
             android:layout_height="wrap_content"
             android:text="A simple omelette made with eggs and tomatoes."
             android:textSize="16sp"
-            android:textColor="#5F5962"
+            android:textColor="@color/app_secondary_text"
             android:lineSpacingExtra="2dp"
             android:layout_marginTop="7dp" />
 

@@ -4,35 +4,49 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/app_background"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="12dp">
 
     <Button
-        android:id="@+id/btnBackToPantry"
+        android:id="@+id/btnBackFromSuggestedRecipes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Back"
+        android:text="&lt; Back"
         android:textSize="16sp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="8dp" />
+        android:textAllCaps="false"
+        android:minHeight="48dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp" />
 
     <TextView
-        android:id="@+id/tvSuggestedRecipesTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Suggested Recipes"
-        android:textSize="34sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        android:paddingBottom="16dp" />
+        android:textColor="@color/app_text" />
 
     <TextView
-        android:id="@+id/tvNoRecipesMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="No recipes match your pantry yet. Try adding more ingredients!"
-        android:textColor="#003366"
-        android:textSize="34sp"
+        android:text="Recipes you can make with your current pantry."
+        android:textSize="16sp"
+        android:textColor="@color/app_secondary_text"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/tvNoRecipes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="No recipes match your pantry yet."
+        android:textSize="16sp"
+        android:textColor="@color/app_secondary_text"
         android:gravity="center"
-        android:padding="16dp"
+        android:padding="20dp"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -40,6 +54,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:clipToPadding="false" />
+        android:clipToPadding="false"
+        android:paddingTop="4dp"
+        android:paddingBottom="8dp" />
 
 </LinearLayout>

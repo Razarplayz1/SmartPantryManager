@@ -2,7 +2,8 @@
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/app_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -12,30 +13,32 @@
 
         <Button
             android:id="@+id/btnBackFromRecipeDetail"
-            android:layout_width="104dp"
-            android:layout_height="68dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="16dp"
-            android:minHeight="48dp"
-            android:text="Back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="&lt; Back"
+            android:textSize="16sp"
             android:textAllCaps="false"
-            android:textSize="16sp" />
+            android:minHeight="48dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="16dp" />
 
         <TextView
             android:id="@+id/tvRecipeName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Tomato Omelette"
-            android:textSize="28sp"
+            android:text="Recipe Name"
+            android:textSize="30sp"
             android:textStyle="bold"
-            android:paddingBottom="8dp" />
+            android:textColor="@color/app_primary"
+            android:layout_marginBottom="8dp" />
 
         <TextView
             android:id="@+id/tvRecipeDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Recipe description"
-            android:textSize="18sp"
+            android:textSize="16sp"
+            android:textColor="@color/app_secondary_text"
             android:layout_marginBottom="24dp" />
 
         <TextView
@@ -44,14 +47,16 @@
             android:text="Ingredients"
             android:textSize="21sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:textColor="@color/app_text"
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:id="@+id/tvRecipeIngredients"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ingredients"
-            android:textSize="18sp"
+            android:text="Recipe ingredients"
+            android:textSize="16sp"
+            android:textColor="@color/app_secondary_text"
             android:layout_marginBottom="24dp" />
 
         <TextView
@@ -60,15 +65,16 @@
             android:text="Method"
             android:textSize="21sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:textColor="@color/app_text"
+            android:layout_marginBottom="10dp" />
 
         <TextView
             android:id="@+id/tvRecipeInstructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Instructions"
-            android:textSize="18sp"
-            android:lineSpacingExtra="4dp" />
+            android:text="Recipe instructions"
+            android:textSize="16sp"
+            android:textColor="@color/app_secondary_text" />
 
     </LinearLayout>
 

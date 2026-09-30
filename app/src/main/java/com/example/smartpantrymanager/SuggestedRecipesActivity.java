@@ -31,9 +31,9 @@ public class SuggestedRecipesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_suggested_recipes);
 
         recipesListView = findViewById(R.id.recyclerViewRecipes);
-        noRecipesNotice = findViewById(R.id.tvNoRecipesMessage);
+        noRecipesNotice = findViewById(R.id.tvNoRecipes);
 
-        btnBackToPantry = findViewById(R.id.btnBackToPantry);
+        btnBackToPantry = findViewById(R.id.btnBackFromSuggestedRecipes);
 
         btnBackToPantry.setOnClickListener(v -> finish());
 

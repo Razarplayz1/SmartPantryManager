@@ -7,14 +7,12 @@
     android:layout_marginBottom="12dp"
     android:background="@drawable/ingredient_background">
 
-    <!-- Small coloured accent bar -->
     <View
         android:id="@+id/ingredientColorAccent"
         android:layout_width="6dp"
         android:layout_height="match_parent"
         android:background="#6B4FA8" />
 
-    <!-- Ingredient card content -->
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -22,7 +20,6 @@
         android:orientation="vertical"
         android:padding="16dp">
 
-        <!-- Ingredient name + quantity -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +33,8 @@
                 android:layout_weight="1"
                 android:text="Tomatoes"
                 android:textSize="21sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/app_text" />
 
             <TextView
                 android:id="@+id/tvIngredientDetails"
@@ -55,17 +53,16 @@
 
         </LinearLayout>
 
-        <!-- Expiry date -->
         <TextView
             android:id="@+id/tvIngredientExpiry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textColor="@color/app_secondary_text"
             android:layout_marginTop="12dp"
             android:visibility="gone" />
 
-        <!-- Expiry warning -->
         <TextView
             android:id="@+id/tvExpiryWarning"
             android:layout_width="match_parent"
@@ -76,7 +73,6 @@
             android:layout_marginTop="5dp"
             android:visibility="gone" />
 
-        <!-- Action buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -105,9 +101,6 @@
                 android:textAllCaps="false"
                 android:minHeight="0dp"
                 android:background="@drawable/delete_button_background" />
-
         </LinearLayout>
-
     </LinearLayout>
-
 </LinearLayout>
